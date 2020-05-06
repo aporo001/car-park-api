@@ -15,7 +15,7 @@ describe('Parking lot Test', () => {
     sqliteDB.Disconnect()
   });
 
-  it('should create a new parking lot', async () => {
+  it('api 1 should create a new parking lot', async () => {
     const res = await request(app)
       .post('/parking-lot')
       .send({
@@ -26,7 +26,7 @@ describe('Parking lot Test', () => {
     expect(res.statusCode).toEqual(200)
   })
 
-  it('should not create a new parking lot when floor and position dupicated', async () => {
+  it('api 1 should not create a new parking lot when floor and position dupicated', async () => {
     const res = await request(app)
       .post('/parking-lot')
       .send({
@@ -37,7 +37,7 @@ describe('Parking lot Test', () => {
     expect(res.statusCode).toEqual(400)
   })
 
-  it('should not create a new parking lot when size not in S,M,L', async () => {
+  it('api 1 should not create a new parking lot when size not in S,M,L', async () => {
     const res = await request(app)
       .post('/parking-lot')
       .send({
@@ -48,35 +48,35 @@ describe('Parking lot Test', () => {
     expect(res.statusCode).toEqual(400)
   })
 
-  it('should can get parking lot detail by id', async () => {
+  it('api 4 should can get parking lot detail by id', async () => {
     const res = await request(app)
       .get('/parking-lot/F1P1')
       .send()
     expect(res.statusCode).toEqual(200)
   })
 
-  it('should can not get parking lot detail by id when id not exist', async () => {
+  it('api 4 should can not get parking lot detail by id when id not exist', async () => {
     const res = await request(app)
       .get('/parking-lot/F1P3')
       .send()
     expect(res.statusCode).toEqual(404)
   })
 
-  it('should can get parking lot allocated list by size', async () => {
+  it('api 6 should can get parking lot allocated list by size', async () => {
     const res = await request(app)
       .get('/parking-lot/list-allocated-by-size?size=S&page=1&limit=10')
       .send()
     expect(res.statusCode).toEqual(200)
   })
 
-  it('should can not get parking lot allocated list by size when no data', async () => {
+  it('api 6 should can not get parking lot allocated list by size when no data', async () => {
     const res = await request(app)
       .get('/parking-lot/list-allocated-by-size?size=M&page=1&limit=10')
       .send()
     expect(res.statusCode).toEqual(404)
   })
 
-  it('should can not get parking lot allocated list by size when size not in S,M,L', async () => {
+  it('api 6 should can not get parking lot allocated list by size when size not in S,M,L', async () => {
     const res = await request(app)
       .get('/parking-lot/list-allocated-by-size?size=A&page=1&limit=10')
       .send()
