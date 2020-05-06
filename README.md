@@ -7,8 +7,7 @@
 **RUN WITH DOCKER**
 
 1. clone project from github
-`git clone https://github.com/aporo001/car-park-api.git .`
-`cd car-park-api`
+`git clone https://github.com/aporo001/car-park-api.git . && cd car-park-api`
 2. build docker image
 `docker build -t car-park-api:1.0.0 .`
 3. run docker image
@@ -19,7 +18,7 @@
 **RUN TEST WITH NPM**
 
  1. clone project from github
-	`git clone https://github.com/aporo001/car-park-api.git .`
+	`git clone https://github.com/aporo001/car-park-api.git . && cd car-park-api`
 	`cd car-park-api`
  2. run install dependency
 	`npm install`
