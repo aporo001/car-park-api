@@ -5,10 +5,6 @@ const sqliteDB = require('../database/sqlite')
 describe('Parking lot Test', () => {
   beforeAll(() => {
     sqliteDB.InitDB()
-    sqliteDB.GetDB().exec(`INSERT INTO parking_lot
-      (id, floor, "position", "size", status)
-      VALUES('F1P2', 1, 2, 'S', 'N');
-      `)
   });
 
   afterAll((done) => {

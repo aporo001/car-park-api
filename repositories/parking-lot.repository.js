@@ -7,12 +7,12 @@ ParkingLotRepository.createParkingLot = (floor, position, size) => {
   let id = `F${floor}P${position}`
   let stmt = sqliteDB.GetDB().prepare('INSERT INTO parking_lot(id, floor, position, size) VALUES (?,?,?,?)');
   return new Promise((resolve, reject) => {
-    stmt.run(id, floor, position, size, function (err) {
+    stmt.run(id, floor, position, size, (err) => {
       if (err) {
-        reject(err)
+        return reject(err)
       }
       stmt.finalize();
-      resolve({ id, floor, position, size, status: 'A' })
+      return resolve({ id, floor, position, size, status: 'A' })
     })
   })
 }
@@ -21,11 +21,11 @@ ParkingLotRepository.getParkingLotByID = (id) => {
   return new Promise((resolve, reject) => {
     let sql = `SELECT pl.id as id, pl.floor as floor, pl."position" as "position", pl."size", pl.status as status 
               FROM parking_lot pl WHERE pl.id = ?`
-    sqliteDB.GetDB().get(sql, id, function (err, row) {
+    sqliteDB.GetDB().get(sql, id, (err, row) => {
       if (err) {
-        reject(err)
+        return reject(err)
       }
-      resolve(row)
+      return resolve(row)
     })
   })
 }
@@ -39,18 +39,18 @@ ParkingLotRepository.getParkingLotListBySizeAndStatus = (size, status, offset, l
     const db = sqliteDB.GetDB()
     let count = 0
     db.serialize(() => {
-      db.get(sqlCount, size, status, function (err, row) {
+      db.get(sqlCount, size, status, (err, row) => {
         if (err) {
-          reject(err)
+          return reject(err)
         }
         count = row.c
       })
 
       db.all(sqlData, size, status, offset, limit, function (err, row) {
         if (err) {
-          reject(err)
+          return reject(err)
         }
-        resolve({
+        return resolve({
           count,
           data: row
         })
@@ -60,5 +60,19 @@ ParkingLotRepository.getParkingLotListBySizeAndStatus = (size, status, offset, l
   })
 }
 
+ParkingLotRepository.getFirstAvailableParkingLotBySize = (size) => {
+  return new Promise((resolve, reject) => {
+    let sql = `SELECT pl.id as id, pl.floor as floor, pl."position" as "position", pl."size", pl.status as status 
+              FROM parking_lot pl 
+              WHERE pl.size = ? AND pl.status = 'A'
+              ORDER BY pl.floor, pl."position" LIMIT 1`
+    sqliteDB.GetDB().get(sql, size, (err, row) => {
+      if (err) {
+        return reject(err)
+      }
+      return resolve(row)
+    })
+  })
+}
 
 module.exports = ParkingLotRepository;
