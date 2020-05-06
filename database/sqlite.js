@@ -14,12 +14,29 @@ SqliteDB.GetDB = () => {
 
 
 SqliteDB.InitDB = () => {
-  SqliteDB.db = new sqlite3.Database(dbPath, sqlite3.OPEN_READWRITE, function (err) {
-    if (err) {
-      console.error(err, ' create db error');
-      process.exit(1);
-    }
-  })
+  if(process.env.NODE_ENV === 'test') {
+    SqliteDB.db = new sqlite3.Database(':memory:');
+    SqliteDB.db.exec(`
+    CREATE TABLE parking_lot (
+      id TEXT(16) NOT NULL,
+      floor INTEGER NOT NULL,
+      "position" INTEGER NOT NULL,
+      "size" TEXT(4) NOT NULL,
+      status TEXT(4) DEFAULT A NOT NULL
+    );
+    
+    CREATE UNIQUE INDEX parking_lot_id_IDX ON parking_lot (id);
+    CREATE INDEX parking_lot_status_IDX ON parking_lot (status);
+    CREATE INDEX parking_lot_size_IDX ON parking_lot ("size");`)
+  } else {
+    SqliteDB.db = new sqlite3.Database(dbPath, sqlite3.OPEN_READWRITE, function (err) {
+      if (err) {
+        console.error(err, ' create db error');
+        process.exit(1);
+      }
+    })
+  }
+ 
 }
 
 SqliteDB.Disconnect = () => {
