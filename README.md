@@ -19,7 +19,6 @@
 
  1. clone project from github
 	`git clone https://github.com/aporo001/car-park-api.git . && cd car-park-api`
-	`cd car-park-api`
  2. run install dependency
 	`npm install`
  3. run test
