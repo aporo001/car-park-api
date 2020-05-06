@@ -59,6 +59,19 @@ router.get('/list-allocated-by-size', [
   }
 })
 
+//count-parking-lot-available-group-by-floor
+router.get('/count-parking-lot-available-group-by-floor', async (req, res) => {
+  try {
+    let data = await parkingRepository.getNumberOfAvailableParkingLotGroupByFloor()
+    if (data) {
+      return res.json(data)
+    }
+    return res.status(404).json({ errors: [{ msg: 'not found' }] })
+  } catch (error) {
+    return res.status(500).json({ errors: [{ msg: error.code }] })
+  }
+})
+
 //get parking lot by id (get status of parking lot)
 router.get('/:id', async (req, res) => {
   try {
@@ -71,8 +84,5 @@ router.get('/:id', async (req, res) => {
     return res.status(500).json({ errors: [{ msg: error.code }] })
   }
 })
-
-
-
 
 module.exports = router;

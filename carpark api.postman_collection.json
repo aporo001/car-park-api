@@ -190,6 +190,26 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "7. count parking lot available group by floor",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/parking-lot/count-parking-lot-available-group-by-floor",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"parking-lot",
+						"count-parking-lot-available-group-by-floor"
+					]
+				}
+			},
+			"response": []
 		}
 	],
 	"protocolProfileBehavior": {}

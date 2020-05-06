@@ -79,5 +79,10 @@ describe('Parking lot Test', () => {
     expect(res.statusCode).toEqual(400)
   })
 
-
+  it('api 7 should can get number of parking available group by floor', async () => {
+    const res = await request(app)
+      .get('/parking-lot/count-parking-lot-available-group-by-floor')
+      .send()
+    expect(res.statusCode).toEqual(200)
+  })
 })

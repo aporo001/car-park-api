@@ -75,4 +75,30 @@ ParkingLotRepository.getFirstAvailableParkingLotBySize = (size) => {
   })
 }
 
+ParkingLotRepository.getNumberOfAvailableParkingLotGroupByFloor = () => {
+  return new Promise((resolve, reject) => {
+    let sql = `
+      SELECT f.floor AS floor, fc.c AS "count"
+      FROM 
+        (
+          SELECT DISTINCT pl1.floor AS floor 
+          FROM parking_lot pl1
+        ) f
+      LEFT JOIN (
+          SELECT pl2.floor AS floor, COUNT(pl2.id) AS c 
+          FROM parking_lot pl2 
+          WHERE pl2.status = 'A'  
+          GROUP BY pl2.floor
+        ) fc
+      ON (f.floor = fc.floor)
+      ORDER BY f.floor`
+    sqliteDB.GetDB().all(sql, (err, rows) => {
+      if (err) {
+        return reject(err)
+      }
+      return resolve(rows)
+    })
+  })
+}
+
 module.exports = ParkingLotRepository;
